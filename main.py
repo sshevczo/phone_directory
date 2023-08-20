@@ -37,15 +37,15 @@ def add_record():
         }
         # сохранение в JSON
         try:
-            with open('phone_directory.json', 'r', encoding='utf-8') as jsonfile:
-                data = json.load(jsonfile)
+            with open('phone_directory.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             data = []
         
         data.append(record)
         
-        with open('phone_directory.json', 'w', encoding='utf-8') as jsonfile:
-            json.dump(data, jsonfile, indent=4, ensure_ascii=False)
+        with open('phone_directory.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
 
         print('Запись добавлена')
         print('-' * 20)
@@ -81,8 +81,8 @@ def display_records():
     print('-' * 20)
     print('-' * 20)
     # чтение из JSON
-    with open('phone_directory.json', 'r', encoding='utf-8') as jsonfile:
-        data = json.load(jsonfile)
+    with open('phone_directory.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
         for record in data:
             print(', '.join(record.values()))
 
