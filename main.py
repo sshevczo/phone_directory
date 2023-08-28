@@ -1,6 +1,32 @@
-import csv 
+import csv
 import json
 from typing import List, Dict, Tuple
+
+
+def main_menu():
+    while True:
+        print("1. Добавить запись")
+        print("2. Вывести записи")
+        print("3. Редактировать запись")
+        print("4. Поиск записей")
+        print("5. Выход")
+
+        choice = input("Выберите действие (1/2/3/4/5): ")
+
+        if choice == "1":
+            add_record()
+        elif choice == "2":
+            display_records()
+        elif choice == "3":
+            edit_record()
+        elif choice == "4":
+            search_records()
+        elif choice == "5":
+            print("Программа завершена")
+            break
+        else:
+            print("Неверный выбор, попробуйте снова")
+
 
 def add_record():
     """
@@ -14,7 +40,7 @@ def add_record():
     work_phone = input('Введите рабочий телефон: ')
     personal_phone = input('Введите личный телефон: ')
 
-     # кортеж для сохранения в csv файл
+    # кортеж для сохранения в csv файл
     new_record = (first_name, last_name, middle_name, organization, work_phone, personal_phone)
 
     if not is_duplicate_record(new_record):
@@ -25,7 +51,7 @@ def add_record():
                 writer.writerow(new_record)
         except Exception as e:
             print(f"Ошибка при сохранении в CSV: {e}")
-        
+
         # список для сохранения в json файл
         record = {
             'first_name': first_name,
@@ -41,9 +67,9 @@ def add_record():
                 data = json.load(f)
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             data = []
-        
+
         data.append(record)
-        
+
         with open('phone_directory.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
@@ -52,6 +78,7 @@ def add_record():
     else:
         print('Такая запись уже существует')
         print('-' * 20)
+
 
 def is_duplicate_record(new_record: Tuple[str]) -> bool:
     """
@@ -71,13 +98,13 @@ def display_records():
     функция для вывода записей из справочника
     """
     print("Вывод записей из справочника")
-    
+
     # чтение из CSV
     with open('phone_directory.csv', 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
         for row in reader:
             print(', '.join(row))
-    
+
     print('-' * 20)
     print('-' * 20)
     # чтение из JSON
@@ -88,7 +115,6 @@ def display_records():
 
     print("Конец записей")
     print('-' * 20)
-
 
 
 def edit_record():
@@ -103,12 +129,12 @@ def edit_record():
     with open('phone_directory.csv', 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
         for row in reader:
-            if row[1] == last_name:  
+            if row[1] == last_name:
                 found = True
                 print('Редактирование записи:')
                 print(', '.join(row))
                 new_record = []
-                new_record.append(row[0])  
+                new_record.append(row[0])
                 new_record.append(input('Введите новую фамилию: '))
                 new_record.append(input('Введите новое отчество: '))
                 new_record.append(input('Введите новое имя организации: '))
@@ -147,7 +173,6 @@ def search_records():
     if not found:
         print('Записи не найдены')
 
-add_record()
-display_records()
-edit_record()
-search_records()
+
+if __name__ == '__main__':
+    main_menu()
